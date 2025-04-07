@@ -1,0 +1,131 @@
+getwd()
+
+#first we are creating our calendar
+# Create a vector of the school days
+days_of_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+
+# Create a vector of your favorite lunch items
+lunch_menu <- c("Pizza", "Salad", "Sandwich", "Pasta", "Tacos")
+
+
+# Print the number of days in the school week
+length(days_of_week)
+
+# Print the number of lunch items
+length(lunch_menu)
+
+
+
+
+# Print the lunch item for Monday
+lunch_menu[1]
+
+# Print the lunch item for Friday
+lunch_menu[5]
+
+# Randomly assign a lunch item to each school day
+set.seed(123) # Optional: This makes the random selection predictable for everyone
+random_lunch_menu <- sample(lunch_menu, 5, replace = FALSE)
+
+# Print the random lunch menu
+random_lunch_menu
+
+# Create a random menu with 3 different lunches repeating across the week
+random_lunch_menu_with_repeats <- sample(lunch_menu, 5, replace = TRUE)
+
+# Print the menu with repeated lunch items
+for (i in 1:5) {
+  print(paste(days_of_week[i], "lunch is:", random_lunch_menu_with_repeats[i]))
+}
+
+# Choose 3 different lunches and repeat them throughout the week
+three_lunches <- sample(lunch_menu, 3)
+random_lunch_menu_with_limited_repeats <- sample(three_lunches, 5, replace = TRUE)
+
+# Print the menu with only 3 different lunches
+for (i in 1:5) {
+  print(paste(days_of_week[i], "lunch is:", random_lunch_menu_with_limited_repeats[i]))
+}
+
+# Install ggplot2 if you don't have it already
+#install.packages("ggplot2")
+
+library(ggplot2)
+
+# # Define the days of the week
+# days_of_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+# 
+# # Create a vector of your favorite lunch items
+# lunch_menu <- c("Pizza", "Salad", "Sandwich", "Pasta", "Tacos")
+# 
+# # Phase 2: Allow lunches to repeat, with only 3 different meals per week
+# set.seed(123) # Optional: Ensures the same random selections for each run
+# 
+# Create a random menu for 4 weeks with 3 different lunches per week
+generate_weekly_menu <- function() {
+  three_lunches <- sample(lunch_menu, 3)  # Select 3 unique lunch items
+  sample(three_lunches, 5, replace = TRUE)  # Randomly assign them to 5 days
+}
+
+# Generate random menus for 4 weeks
+week1_menu <- generate_weekly_menu()
+week2_menu <- generate_weekly_menu()
+week3_menu <- generate_weekly_menu()
+week4_menu <- generate_weekly_menu()
+
+# Combine the menus into a data frame
+menu_data <- data.frame(
+  Week = rep(c("Week 1", "Week 2", "Week 3", "Week 4"), each = 5),
+  Day = factor(rep(days_of_week, times = 4), levels = days_of_week),  # Ensure correct order of days
+  Lunch = c(week1_menu, week2_menu, week3_menu, week4_menu)
+)
+# Plot the calendar with each week's menu
+ggplot(menu_data, aes(x = Day, y = Week)) +
+  geom_tile(color = "black", fill = "lightblue", alpha = 0.7) +
+  geom_text(aes(label = Lunch), size = 5) +
+  labs(title = "Randomized Lunch Menu Calendar for the Month", x = "Day", y = "Week") +
+  theme_minimal()
+
+# Plot the calendar with each week's menu
+ggplot(menu_data, aes(x = Day, y = Week)) +
+  geom_tile(color = "black", fill = "lightblue", alpha = 0.7) +
+  geom_text(aes(label = Lunch), size = 5) +
+  labs(title = "Lunch Menu Calendar for the Month", x = "Day", y = "Week") +
+  theme_minimal()
+
+
+
+
+
+
+#######
+install.packages("dplyr")
+# Import necessary libraries
+library(dplyr)
+
+# Create a data frame of traffic data
+traffic_data <- data.frame(
+  Time_Frame = c('2024-09-25 09:00', '2024-09-25 09:00:30', '2024-09-25 09:01', '2024-09-25 09:01:30', 
+                 '2024-09-25 09:02', '2024-09-25 09:02:30', '2024-09-25 09:03', '2024-09-25 09:03:30',
+                 '2024-09-25 09:04', '2024-09-25 09:04:30'),
+  Total_Cars = c(11, 8, 17, 19, 15, 6, 12, 13, 10, 7),
+  Red_Cars = c(2, 2, 2, 4, 3, 1, 3, 0, 1, 0)
+)
+
+# Function to calculate stats
+calc_traffic_stats <- function(df) {
+  total_cars <- sum(df$Total_Cars)
+  total_red_cars <- sum(df$Red_Cars)
+  red_car_percentage <- (total_red_cars / total_cars) * 100
+  avg_cars_per_timeframe <- mean(df$Total_Cars)
+  
+  cat("Total cars counted: ", total_cars, "\n")
+  cat("Total red cars: ", total_red_cars, "\n")
+  cat("Percentage of red cars: ", round(red_car_percentage, 2), "%\n")
+  cat("Average number of cars per 30 seconds: ", round(avg_cars_per_timeframe, 2), "\n")
+}
+
+# Call the function with the traffic data
+calc_traffic_stats(traffic_data)
+
+
