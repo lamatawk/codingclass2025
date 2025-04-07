@@ -1,0 +1,32 @@
+# Install the required package if not already installed
+if (!require("crayon")) install.packages("crayon")
+library(crayon)
+
+# List of emojis to use
+emojis <- c("\U1F600", "\U1F603", "\U1F604", "\U1F606", "\U1F60A", "\U1F60D")
+
+# Function to generate a random grid of colorful emojis
+generate_emoji_grid <- function(rows, cols) {
+  grid <- ""
+  for (i in 1:rows) {
+    for (j in 1:cols) {
+      emoji <- sample(emojis, 1) # Pick a random emoji
+      color_function <- sample(list(blue, red, green, yellow, magenta, cyan), 1) # Pick a random color function
+      grid <- paste0(grid, color_function[[1]](emoji), " ") # Apply the color to the emoji
+    }
+    grid <- paste0(grid, "\n") # Add a newline at the end of each row
+  }
+  return(grid)
+}
+
+# Function to animate the grid
+dancing_emojis <- function(rows = 5, cols = 5, frames = 10, speed = 0.3) {
+  for (i in 1:frames) {
+    cat("\033[H\033[J") # Clear the console
+    cat(generate_emoji_grid(rows, cols)) # Print the emoji grid
+    Sys.sleep(speed) # Pause before the next frame
+  }
+}
+
+# Run the dancing emoji animation
+dancing_emojis(rows = 5, cols = 5, frames = 20, speed = 0.2)
