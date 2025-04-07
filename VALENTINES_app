@@ -1,0 +1,39 @@
+library(shiny)
+
+# List of compliments
+compliments <- c(
+  "You light up the room! ✨",
+  "You're coding like a pro! 💻",
+  "You have a beautiful mind! 🧠💖",
+  "You make learning fun! 🎉",
+  "Your creativity is inspiring! 🎨",
+  "You’re the heart of the team! ❤️",
+  "You bring so much joy! 🌟",
+  "You don’t need anyone! Love yourself 🌟"
+)
+
+ui <- fluidPage(
+  titlePanel("Valentine's Compliment Generator 💕"),
+  sidebarLayout(
+    sidebarPanel(
+      actionButton("new_compliment", "Give Me a Compliment! 💌")
+    ),
+    mainPanel(
+      h3(textOutput("compliment"), style = "color: red; font-weight: bold; text-align: center;")
+    )
+  )
+)
+
+server <- function(input, output) {
+  compliment_reactive <- reactiveVal("Click the button for a compliment! 😊")
+  
+  observeEvent(input$new_compliment, {
+    compliment_reactive(sample(compliments, 1))
+  })
+  
+  output$compliment <- renderText({
+    compliment_reactive()
+  })
+}
+
+shinyApp(ui = ui, server = server)
